@@ -7,5 +7,6 @@ I am going to taining module for classifier the post that is very important for 
 
 # step for setup the project
 1. npm install
-2. open the browser
-3. write in search: http://localhost:3000/
+2. download MongoDB database
+3. open the browser
+4. write in search: http://localhost:3000/
