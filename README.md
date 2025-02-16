@@ -16,7 +16,8 @@ nasher build it in node js with express framework and another librarys, nasher v
 I am going to taining module for classifier the post that is very important for give user posts according to his interest
 
 # step for setup the project
-1. npm install
-2. download MongoDB database
-3. open the browser
-4. write in search: http://localhost:3000/
+1. run the command npm install
+2. download MongoDB database for your devics
+3. run the command node start
+4. open the browser
+5. write in search: http://localhost:3000/
