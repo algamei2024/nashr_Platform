@@ -1,0 +1,93 @@
+<%-include('../partials/header.ejs')-%>
+<div class="flex justify-between p-3">
+    <div class="flex items-center">
+        <a class="hover:bg-slate-200 rounded-full p-2 ml-2" href="/">
+            <svg fill="#000000" width="30px" height="30px" viewBox="0 0 32 32"
+                style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;" version="1.1"
+                xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:serif="http://www.serif.com/"
+                xmlns:xlink="http://www.w3.org/1999/xlink">
+                <path
+                    d="M25.468,14.508l-20.967,-0.008c-0.828,-0 -1.501,0.672 -1.501,1.499c-0,0.828 0.672,1.501 1.499,1.501l21.125,0.009c-0.107,0.159 -0.234,0.306 -0.377,0.439c-3.787,3.502 -9.68,8.951 -9.68,8.951c-0.608,0.562 -0.645,1.511 -0.083,2.119c0.562,0.608 1.512,0.645 2.12,0.083c-0,0 5.892,-5.448 9.68,-8.95c1.112,-1.029 1.751,-2.47 1.766,-3.985c0.014,-1.515 -0.596,-2.968 -1.688,-4.018l-9.591,-9.221c-0.596,-0.574 -1.547,-0.556 -2.121,0.041c-0.573,0.597 -0.555,1.547 0.042,2.121l9.591,9.221c0.065,0.063 0.127,0.129 0.185,0.198Z" />
+                <g id="Icon" />
+            </svg>
+        </a>
+        <h1>منشوراتي</h1>
+    </div>
+</div>
+<div class="container-PostShow w-full pb-4">
+ <%if(locals.user){%>
+    <%posts.forEach((post)=>{%>
+    <div class="container-post border-t-2 border-b-2 p-3">
+        <div class="post-profile flex justify-between">
+            <div class="profile-img flex items-center cursor-pointer">
+                <div class="ml-2">
+                    <img class="h-14 w-14 rounded-full border-2 object-cover"
+                        src="<%= user.avatar.replace('uploads','')%>" alt="logo">
+                </div>
+                <div>
+                    <h1><%= user.name%></h1>
+                    <p><%=post.updatedAt%></p>
+                </div>
+            </div>
+            <div class="relative">
+                <div class="cursor-pointer flex items-center hover:bg-slate-300 rounded-2xl" onclick="menuPost(this)">
+                   <div id="men-open" class="">
+                        <svg width="40px" height="40px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M19 13C19.5523 13 20 12.5523 20 12C20 11.4477 19.5523 11 19 11C18.4477 11 18 11.4477 18 12C18 12.5523 18.4477 13 19 13Z"
+                                stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            <path
+                                d="M12 13C12.5523 13 13 12.5523 13 12C13 11.4477 12.5523 11 12 11C11.4477 11 11 11.4477 11 12C11 12.5523 11.4477 13 12 13Z"
+                                stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            <path
+                                d="M5 13C5.55228 13 6 12.5523 6 12C6 11.4477 5.55228 11 5 11C4.44772 11 4 11.4477 4 12C4 12.5523 4.44772 13 5 13Z"
+                                stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                   </div>
+                   <div id="men-close" class="hidden">
+                        <svg width="40px" height="40px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <g id="Menu / Close_SM">
+                                <path id="Vector" d="M16 16L12 12M12 12L8 8M12 12L16 8M12 12L8 16" stroke="#000000" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round" />
+                            </g>
+                        </svg>
+                   </div>
+                </div>
+                <div class="hidden flex flex-col bg-slate-400 absolute z-50 top-[100%] left-[100%] rounded-md
+                                p-2" id="mPost">
+                    <form action="/post/editPost" method="post">
+                        <input type="hidden" name="postId" value="<%=post.id%>">
+                        <button class="block px-4 py-2 text-sm text-gray-700 hover:bg-slate-300 w-40 text-right" type="submit">تعديل</button>
+                    </form>
+                    <form action="/post/delete" method="post">
+                        <input type="hidden" name="postId" value="<%=post.id%>">
+                        <button class="block px-4 py-2 text-sm text-gray-700 hover:bg-slate-300 w-40 text-right" type="submit">حذف</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="post-text">
+            <p>
+                <%= post.content.replace(/https?:\/\/[^\s]+/g,`<a href="$&" target="_blank">$&</a>`)%>
+            </p>
+        </div>
+        <div class="post-audio flex flex-wrap gap-3">
+            <%post.files.forEach((file)=>{%>
+                <%if(file.match(imageExtensions)){%>
+                <img class="rounded-md pt-1"
+                    src="<%=file.replace('uploads','')%>"
+                    alt="img">
+                <%}else{%>
+                    <video class="rounded-md pt-1" controls>
+                        <source src="<%=file.replace('uploads','')%>" type="video/mp4">
+                        <source src="<%=file.replace('uploads','')%>" type="video/ogg">
+                        متصفحك لا يدعم تشغيل الفيديو.
+                    </video>
+                <%}%>
+             <%})%>
+        </div>
+    </div>
+    <%})%>
+ <%}%>
+</div>
+<script src="/js/post.js"></script>

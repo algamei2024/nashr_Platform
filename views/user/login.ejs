@@ -1,0 +1,27 @@
+<%-include('../partials/header.ejs')-%>
+<div>
+    <img class="object-contain h-44" src="/logo.png" alt="">
+</div>
+<div class="flex flex-col w-[90%] m-auto p-2 xl:w-1/2 xl:border xl:border-lime-700 xl:rounded-2xl mb-8">
+    <div class="m-5">
+        <h1 class="font-bold border-b-4 border-orange-500">تسجيل الدخول</h1>
+    </div>
+    <div class="mt-4">
+        <%-include('../partials/messages.ejs')-%>
+        <form class="flex justify-center flex-col gap-8" action="/login" method="post">
+            <div>
+                <label for="email">البريد الالكتروني *</label>
+                <input class="w-full mt-2 p-3 border shadow-sm rounded-md outline-none focus:border-lime-700" type="email" name="email" id="email" placeholder="البريد الالكتروني" autocomplete="email" required>
+            </div>
+            <div>
+                <label for="password">كلمة المرور*</label>
+                <input name="password" id="password" class="w-full bg-white border shadow-sm mt-2 p-3 rounded-md outline-none focus:border-lime-700" type="password" autocomplete="current-password" placeholder="كلمة المرور" required>
+            </div>
+            <div class="text-center mt-3">
+                <a class="hover:underline" href="#">هل نسيت كلمة المرور</a>
+            </div>
+            <button class="bg-blue-900 text-white rounded-md p-4 hover:bg-slate-200 hover:text-black" type="submit">تسجيل</button>
+        </form>
+    </div>
+</div>
+<%-include('../partials/footer.ejs')-%>

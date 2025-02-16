@@ -1,0 +1,26 @@
+*{
+    scroll-behavior: smooth;
+}
+body {
+    font-family: 'Cairo', sans-serif;
+}
+.filepond--drop-label {
+    background-color: white;
+}
+.Audio:hover{
+    border:1px solid gray;
+    border-radius: 10px;
+    box-shadow: 0 0 2px gray;
+}
+
+@keyframes spin {
+    from{
+        transform: rotate(0deg);
+    }
+    to{
+        transform: rotate(360deg);
+    }
+}
+.aniRot{
+    animation: spin 1s linear infinite;
+}

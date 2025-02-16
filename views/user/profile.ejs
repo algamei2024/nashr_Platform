@@ -1,0 +1,63 @@
+<%-include('../partials/header.ejs')-%>
+<div class="flex justify-between p-3">
+    <div class="flex items-center">
+        <a class="hover:bg-slate-200 rounded-full p-2 ml-2" href="/">
+            <svg fill="#000000" width="30px" height="30px" viewBox="0 0 32 32"
+                style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;" version="1.1"
+                xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:serif="http://www.serif.com/"
+                xmlns:xlink="http://www.w3.org/1999/xlink">
+                <path
+                    d="M25.468,14.508l-20.967,-0.008c-0.828,-0 -1.501,0.672 -1.501,1.499c-0,0.828 0.672,1.501 1.499,1.501l21.125,0.009c-0.107,0.159 -0.234,0.306 -0.377,0.439c-3.787,3.502 -9.68,8.951 -9.68,8.951c-0.608,0.562 -0.645,1.511 -0.083,2.119c0.562,0.608 1.512,0.645 2.12,0.083c-0,0 5.892,-5.448 9.68,-8.95c1.112,-1.029 1.751,-2.47 1.766,-3.985c0.014,-1.515 -0.596,-2.968 -1.688,-4.018l-9.591,-9.221c-0.596,-0.574 -1.547,-0.556 -2.121,0.041c-0.573,0.597 -0.555,1.547 0.042,2.121l9.591,9.221c0.065,0.063 0.127,0.129 0.185,0.198Z" />
+                <g id="Icon" />
+            </svg>
+        </a>
+        <h1>الملف الشخصي</h1>
+    </div>
+    <div>
+        <button class="p-2 hover:text-orange-500" id="next">حفظ</button>
+    </div>
+</div>
+<div class="flex flex-col border-t-2 p-2">
+    <div class="flex flex-col items-center">
+        <div class="relative">
+            <%if(locals.user){%>
+                <img class="w-52 h-52 rounded-full border-2 object-cover"
+                    src="<%= user.avatar.replace('uploads','')%>" alt="profile" id="profile">
+            <%}%>
+                <input type="file" name="avatar" hidden id="avatar" accept="image/*">
+            <label for="avatar" class="absolute top-[46%] right-44 bg-slate-400 rounded-full p-1 border-2  border-white hover:bg-orange-500">
+                <svg width="40px" height="40px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="12" cy="12" r="4" stroke="#FFFFFF" stroke-width="1.5" />
+                    <path
+                        d="M22 12C22 16.714 22 19.0711 20.5355 20.5355C19.0711 22 16.714 22 12 22C7.28595 22 4.92893 22 3.46447 20.5355C2 19.0711 2 16.714 2 12C2 7.28595 2 4.92893 3.46447 3.46447C4.92893 2 7.28595 2 12 2C16.714 2 19.0711 2 20.5355 3.46447C21.5093 4.43821 21.8356 5.80655 21.9449 8"
+                        stroke="#FFFFFF" stroke-width="1.5" stroke-linecap="round" />
+                </svg>
+            </label>
+        </div>
+        <div>
+            <%if(locals.user){%>
+                <h1><%= user.name %></h1>
+            <%}%>
+        </div>
+        <a href="/edit" class="focus:border-b-2">
+            <svg width="50px" height="50px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path
+                    d="M20.1498 7.93997L8.27978 19.81C7.21978 20.88 4.04977 21.3699 3.32977 20.6599C2.60977 19.9499 3.11978 16.78 4.17978 15.71L16.0498 3.84C16.5979 3.31801 17.3283 3.03097 18.0851 3.04019C18.842 3.04942 19.5652 3.35418 20.1004 3.88938C20.6356 4.42457 20.9403 5.14781 20.9496 5.90463C20.9588 6.66146 20.6718 7.39189 20.1498 7.93997V7.93997Z"
+                    stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+        </a>
+    </div>
+    <div class="p-4">
+        <div>
+            <h1 class="font-bold m-4 border-b-2 border-lime-500 w-fit">*النبذه التريفية</h1>
+        </div>
+        <div>
+            <%if(locals.user){%>
+            <p><%= user.description %></p>
+            <%} else{%>
+                قم بكتابة النبذه التعريفية لتقديم نفسك.
+            <%}%>
+        </div>
+    </div>
+</div>
+<script src="js/user.js"></script>

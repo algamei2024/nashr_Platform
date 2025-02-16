@@ -1,0 +1,28 @@
+<%-include('../partials/header.ejs')-%>
+<div class="flex flex-col">
+    <div>
+        <h1 class="pt-8 mr-5 text-orange-500 font-bold border-b-2 border-lime-500 w-fit">*اكمل ملفك الشخصي</h1>
+    </div>
+    <div class="text-center p-5">
+        <h1>اختر صورتك الشخصية</h1>
+    </div>
+    <div class="flex justify-center items-center">
+        <label for="avatar" class="bg-slate-400 rounded-full p-2 border-2  border-white hover:bg-orange-500" id="profile">
+            <input type="file" name="avatar" id="avatar" accept="image/*" hidden>
+            <svg width="80px" height="80px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="12" cy="12" r="4" stroke="#FFFFFF" stroke-width="1.5" />
+                <path
+                    d="M22 12C22 16.714 22 19.0711 20.5355 20.5355C19.0711 22 16.714 22 12 22C7.28595 22 4.92893 22 3.46447 20.5355C2 19.0711 2 16.714 2 12C2 7.28595 2 4.92893 3.46447 3.46447C4.92893 2 7.28595 2 12 2C16.714 2 19.0711 2 20.5355 3.46447C21.5093 4.43821 21.8356 5.80655 21.9449 8"
+                    stroke="#FFFFFF" stroke-width="1.5" stroke-linecap="round" />
+            </svg>
+        </label>
+    </div>
+</div>
+
+<div class="fixed bottom-6 right-4 bg-slate-400 p-4 w-16 text-center rounded-md text-white hover:bg-blue-500">
+   <a href="" id="next">التالي</a>
+</div>
+<div class="fixed bottom-6 left-4 bg-slate-400 p-4 w-16 text-center rounded-md text-white hover:bg-blue-500">
+   <a href="/descrip">تخطي</a>
+</div>
+<script src="js/user.js"></script>
