@@ -1,122 +1,66 @@
 <div class="container-PostShow w-full pb-4">
+    <%if(locals.user){%>
+    <%posts.forEach((post)=>{
+        %>
     <div class="container-post border-t-2 border-b-2 p-3">
         <div class="post-profile flex justify-between">
             <div class="profile-img flex items-center cursor-pointer">
                 <div class="ml-2">
-                    <img class="h-14 w-14 rounded-full border-2 object-cover" src="https://www.aljazeera.net/static/media/aj-footer-logo.bac952ad.svg" alt="logo">
+                    <img class="h-14 w-14 rounded-full border-2 object-cover"
+                        src="<%= post.userId.avatar.replace('uploads','')%>" alt="logo">
                 </div>
                 <div>
-                    <h1>قناة الجزيرة</h1>
-                    <p>29-2-2024</p>
+                    <h1><%=post.userId.name%></h1>
+                    <p><%=post.createdAt%></p>
                 </div>
             </div>
             <div class="cursor-pointer flex items-center hover:bg-slate-300 rounded-2xl" onclick="delPost(this)">
                 <svg width="50px" height="50px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <g id="Menu / Close_SM">
-                        <path id="Vector" d="M16 16L12 12M12 12L8 8M12 12L16 8M12 12L8 16" stroke="#000000" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round" />
+                        <path id="Vector" d="M16 16L12 12M12 12L8 8M12 12L16 8M12 12L8 16" stroke="#000000"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                     </g>
                 </svg>
             </div>
         </div>
         <div class="post-text">
             <p>
-                سمعت المواطنة "ب، س" وهي إحدى النازحات، من مخيم جنين، صوت الانفجار من قرية بير الباشا التي نزحت إليها جنوبا. تقول
-                النازحة: "في البداية اقتحموا منازلنا وحولوها لثكنات عسكرية، ثم بدأت الأخبار تتوارد بإحراقها وهدم عدد منها، واليوم
-                نسفوها".
-                
-                في اليوم الـ13 من العملية العسكرية في مدينة ومخيم جنين شمال الضفة الغربية، فجر جيش الاحتلال الإسرائيلي قرابة 20 بناية
-                سكنية في القسم الشرقي من المخيم بشكل متزامن.
-                
-                ومنذ صباح اليوم الأحد بدأ الجيش مد أسلاك في مربعات سكنية في عدة حارات من المخيم. وبحلول الساعة الثالثة والربع، هزت
-                انفجارات متتالية وعنيفة عموم مدينة جنين وأجزاء من البلدات المحيطة بها، بعد نسف جيش الاحتلال منازل المواطنين بشكل متزامن.
-                
-                وعلى الفور قال الناطق باسم جيش الاحتلال الإسرائيلي، في بيان مقتضب، إن قوات الاحتلال نفذت تفجيرا لقرابة 20 منزلا في مخيم
-                جنين ضمن عملية "السور الواقي".
-                
-                وكان جيش الاحتلال قد أطلق منذ ظهر اليوم الأحد تحذيرا لمستوطني مناطق الأغوار الشمالية عن إمكانية سماع دوي انفجارات في
-                منطقة جنين وقال البيان "إنه لا خوف من وقوع حدث أمني".
+                <%=post.content%>
             </p>
         </div>
         <div class="post-audio flex flex-wrap gap-3">
-            <img class="rounded-md pt-1" src="https://www.aljazeera.net/wp-content/uploads/2025/02/asdsdfdwedfedrfg-1738509797.jpg?resize=770%2C513&quality=80" alt="img">
-            <img class="rounded-md pt-1" src="https://www.aljazeera.net/wp-content/uploads/2025/02/%D8%A8%D9%84%D8%AB%D9%8A%D8%A8%D9%84%D8%AB%D9%82%D8%A8%D9%84%D9%82%D8%AB%D9%81%D9%84%D8%A7%D9%82-1738509804.jpg?w=770&resize=770%2C513&quality=80" alt="img">
-        </div>
-    </div>
-    <div class="container-post border-t-2 border-b-2 p-3">
-        <div class="post-profile flex justify-between">
-            <div class="profile-img flex items-center cursor-pointer">
-                <div class="ml-2">
-                    <img class="h-14 w-14 rounded-full border-2 object-cover" src="https://www.alaraby.com/themes/custom/arabytv/logo.svg?v=12" alt="logo">
-                </div>
-                <div>
-                    <h1>التلفزيون العربي</h1>
-                    <p>29-2-2024</p>
-                </div>
-            </div>
-            <div class="cursor-pointer flex items-center hover:bg-slate-300 rounded-2xl" onclick="delPost(this)">
-                <svg width="50px" height="50px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <g id="Menu / Close_SM">
-                        <path id="Vector" d="M16 16L12 12M12 12L8 8M12 12L16 8M12 12L8 16" stroke="#000000" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round" />
-                    </g>
-                </svg>
-            </div>
-        </div>
-        <div class="post-text">
-            <p>
-                أحدث إطلاق برنامج "آر 1" من تطبيق "ديب سيك" المنافس الصيني لـ"تشات جي بي تي" قبل بضعة أيام، ضجة في قطاع الذكاء
-                الاصطناعي، لقدرته على مضاهاة منافسيه الأميركيين بكلفة أقل بكثير.
-                
-                والأسبوع الماضي، أطلقت شركة "ديب سيك" DeepSeek الصينية الناشئة نموذجًا جديدًا للذكاء الاصطناعي يشبه "تشات جي بي تي" (من
-                "أوبن إيه آي") و"جيميناي" (من "غوغل") وغيرهما، ولكن بجزء بسيط من التكلفة التي تكبدتها الشركات العملاقة الأميركية.
-                
-                وقد أثار الاعتماد السريع لتقنية "ديب سيك" الدهشة والإعجاب، وأدى إلى تراجع كبير في أسهم شركة "إنفيديا" Nvidia (المورد
-                الرائد لشرائح الذكاء الاصطناعي) في بورصة وول ستريت، وسط سيل من التحذيرات.
-                
-                تطبيق "ديب سيك" الصيني"
-                وفي 20 يناير/ كانون الثاني الحالي، أطلقت "ديب سيك" في الصين نموذج ذكاء اصطناعي طوّرته بتكلفة منخفضة وباستخدام عدد قليل
-                من الرقائق مقارنة بشركات الذكاء الاصطناعي الأخرى.
-                
-                وتجاوز النموذج الذي بدأ استخدامه على نطاق واسع في أنحاء العالم خلال مدة قصيرة، تطبيق "تشات جي بي تي" الأميركي ليصبح أكثر
-                تطبيقات الذكاء الاصطناعي استخدامًا.
-                
-                
-                وأثار التطور التكنولوجي الهائل للذكاء الاصطناعي، تساؤلات بين المستخدمين، حول من الأفضل تطبيق "ديب سيك" الجديد، أو "تشات
-                جي بي تي".
-                
-                وللإجابة على هذه التساؤلات، قمنا بطرح السؤال التالي على "تشات جي بي تي"، "من الأفضل بينك وبين "ديب سيك"؟ فكان الجواب:
-                "أنا و"ديب سيك"، وغيره من نماذج الذكاء الاصطناعي، لدينا نقاط قوة وضعف، وكل منا مصمم بطريقة مختلفة لخدمة أغراض معينة.
-                
-                وعدد تطبيق "تشات جي بي تي" مميزاته:
-                أستطيع التعامل مع مواضيع متنوعة، من الكتابة الإبداعية إلى البرمجة إلى التحليل العميق.
-                الدعم متعدد اللغات: لدي قدرة قوية على فهم اللغة العربية والإنكليزية ولغات أخرى بسلاسة.
-                التفاعل البشري: أستطيع توليد محتوى بأسلوب قريب من التفاعل البشري، مما يجعل المحادثات أكثر طبيعية.
-                وأشار إلى أن ما قد يميز منافسه "ديب سيك":
-                التدريب على البيانات الصينية: هو نموذج قوي جدًا في فهم وتحليل اللغة الصينية.
-                تحسينات في استرجاع المعلومات: يمكن أن يكون أكثر دقة أحيانًا في استرجاع المعلومات التقنية.
-                تركيز على الرياضيات والبرمجة: قد يكون لديه أداء أقوى في بعض الحسابات المعقدة.
-                وخلص "تشات جي بي تي" إلى أن الأمر يعتمد على احتياجات المستخدم، فإذا كان يبحث عن تجربة محادثة طبيعية ومتعددة اللغات، "فهو
-                جاهز لخدمته".
-                
-                أما إذا كان بحاجة إلى تحليل متعمق في بعض المجالات التقنية التي يتخصص بها، فتطبيق "ديب سيك"، قد يكون خيارًا جيدًا.
-            </p>
-        </div>
-        <div class="post-audio flex flex-wrap gap-3">
-            <img class="rounded-md pt-1" src="https://www.alaraby.com/sites/default/files/styles/d09_standard/public/2025-02/GettyImages-2197000261.webp?h=adf48559&itok=adHw51DY" alt="img">
-            <img class="rounded-md bt-1" src="https://www.alaraby.com/sites/default/files/2023-07/LIve-ATVYT2023.png" alt="img">
+            <%post.files.forEach((file)=>{%>
+                <%if(file.match(imageExtensions)){%>
+                     <img class="rounded-md pt-1" src="<%=file.replace('uploads','')%>" alt="img">
+                <%}else{%>
+                    <video class="rounded-md pt-1" controls>
+                    <source src="<%=file.replace('uploads','')%>" type="video/mp4">
+                    <source src="<%=file.replace('uploads','')%>" type="video/ogg">
+                    متصفحك لا يدعم تشغيل الفيديو.
+                    </video>
+                <%}%>
+            <%})%>
         </div>
         <div class="flex justify-between p-4">
             <div>
-                <div class="text-center">66</div>
-                <svg width="40px" height="40px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path
-                        d="M7.47998 18.35L10.58 20.75C10.98 21.15 11.88 21.35 12.48 21.35H16.28C17.48 21.35 18.78 20.45 19.08 19.25L21.48 11.95C21.98 10.55 21.08 9.34997 19.58 9.34997H15.58C14.98 9.34997 14.48 8.84997 14.58 8.14997L15.08 4.94997C15.28 4.04997 14.68 3.04997 13.78 2.74997C12.98 2.44997 11.98 2.84997 11.58 3.44997L7.47998 9.54997"
-                        stroke="#292D32" stroke-width="1.5" stroke-miterlimit="10" />
-                    <path
-                        d="M2.38 18.35V8.55002C2.38 7.15002 2.98 6.65002 4.38 6.65002H5.38C6.78 6.65002 7.38 7.15002 7.38 8.55002V18.35C7.38 19.75 6.78 20.25 5.38 20.25H4.38C2.98 20.25 2.38 19.75 2.38 18.35Z"
-                        stroke="#292D32" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                </svg>
+                <%if(post.likes.length > 0){%>
+                    <form action="/post/like/users" method="post">
+                        <input type="hidden" name="postId" value="<%=post._id%>">
+                        <button class="text-center"><%=post.likes.length%>
+                            <span><%=post.lastLikeBy%> و اخرون</span> 
+                        </button>
+                    </form>
+                <%}%>
+               <a href="/post/like/<%=post._id%>">
+                    <svg width="40px" height="40px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M7.47998 18.35L10.58 20.75C10.98 21.15 11.88 21.35 12.48 21.35H16.28C17.48 21.35 18.78 20.45 19.08 19.25L21.48 11.95C21.98 10.55 21.08 9.34997 19.58 9.34997H15.58C14.98 9.34997 14.48 8.84997 14.58 8.14997L15.08 4.94997C15.28 4.04997 14.68 3.04997 13.78 2.74997C12.98 2.44997 11.98 2.84997 11.58 3.44997L7.47998 9.54997"
+                            stroke="#292D32" stroke-width="1.5" stroke-miterlimit="10" />
+                        <path
+                            d="M2.38 18.35V8.55002C2.38 7.15002 2.98 6.65002 4.38 6.65002H5.38C6.78 6.65002 7.38 7.15002 7.38 8.55002V18.35C7.38 19.75 6.78 20.25 5.38 20.25H4.38C2.98 20.25 2.38 19.75 2.38 18.35Z"
+                            stroke="#292D32" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+               </a>
             </div>
             <div class="hover:bg-gray-200 rounded-xl">
                 <svg width="40px" height="40px" viewBox="0 -0.5 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -131,54 +75,13 @@
             <div class="hover:bg-gray-200 rounded-xl">
                 <svg width="40px" height="40px" viewBox="0 0 24 24" id="share" xmlns="http://www.w3.org/2000/svg">
                     <rect id="Rectangle_3" data-name="Rectangle 3" width="24" height="24" fill="none" />
-                    <path id="Rectangle" d="M12,4V0l8,7-8,7V10S0,9.069,0,14.737C0,3.4,12,4,12,4Z" transform="translate(2 5)"
-                        fill="none" stroke="#000000" stroke-miterlimit="10" stroke-width="1.5" />
+                    <path id="Rectangle" d="M12,4V0l8,7-8,7V10S0,9.069,0,14.737C0,3.4,12,4,12,4Z"
+                        transform="translate(2 5)" fill="none" stroke="#000000" stroke-miterlimit="10"
+                        stroke-width="1.5" />
                 </svg>
             </div>
         </div>
     </div>
-    <div class="container-post border-t-2 border-b-2 p-3">
-        <div class="post-profile flex justify-between">
-            <div class="profile-img flex items-center cursor-pointer">
-                <div class="ml-2">
-                    <img class="h-14 w-14 rounded-full border-2 object-cover" src="https://www.alquds.co.uk/wp-content/themes/alqudsalarabi/img/logo.gif" alt="logo">
-                </div>
-                <div>
-                    <h1>القدس العربي</h1>
-                    <p>29-2-2024</p>
-                </div>
-            </div>
-            <div class="cursor-pointer flex items-center hover:bg-slate-300 rounded-2xl" onclick="delPost(this)">
-                <svg width="50px" height="50px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <g id="Menu / Close_SM">
-                        <path id="Vector" d="M16 16L12 12M12 12L8 8M12 12L16 8M12 12L8 16" stroke="#000000" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round" />
-                    </g>
-                </svg>
-            </div>
-        </div>
-        <div class="post-text">
-            <p>
-                غزة: أعلن رئيس المكتب الإعلامي الحكومي في غزة، سلامة معروف، الأحد، أن حرب الإبادة الإسرائيلية على قطاع غزة، التي استمرت
-                أكثر من 15 شهرا، أسفرت عن استشهاد 61709 فلسطينيين، بينهم 17881 طفلًا، إضافة إلى تضرر أكثر من 450 ألف وحدة سكنية.
-                
-                وقال معروف خلال مؤتمر صحافي عقده في مدينة غزة: “الإبادة الإسرائيلية بالقطاع أدت لاستشهاد أكثر من 61709 شهداء منهم 47487
-                وصلوا إلى المستشفيات وبقي 14222 مفقودا تحت الركام”.
-                
-                وأضاف: ” الاحتلال قتل في غزة 17881 طفلا منهم 214 رضيعا وُلدوا وماتوا خلال الإبادة ويتّم أكثر من 38 ألف طفل”.
-                
-                وتابع: “الاحتلال قتل 1155 من الطواقم الطبية و205 من الصحافيين و194 من رجال الدفاع المدني”.
-                
-                وأشار إلى أن قوات الاحتلال الإسرائيلية اعتقلت خلال الإبادة على غزة أكثر من 6 آلاف فلسطيني، قتلت العشرات منهم تحت التعذيب
-                داخل السجون والمعتقلات.
-                
-                وذكر أن “النزوح القسري جراء الإبادة طال أكثر من مليوني فلسطيني بعضهم نزح أكثر من 25 مرة في ظروف معدومة الخدمات”.
-                
-                (الأناضول)
-            </p>
-        </div>
-        <div class="post-audio flex flex-wrap gap-3">
-            <img class="rounded-md pt-1" src="https://www.alquds.co.uk/wp-content/uploads/2025/02/15ipj-1-730x438.jpg" alt="img">
-        </div>
-    </div>
+    <%});%>
+    <%}%>
 </div>

@@ -4,6 +4,8 @@ const session = require('express-session');
 const passport = require('passport');
 const flash = require('connect-flash');
 const db = require('./config/database');
+const Post = require('./models/Post');
+const User = require('./models/User');
 const passportSetup = require('./config/passport-setup');
 const multer = require('multer');
 const upload = multer({ dest: '/uploads' });
@@ -38,10 +40,18 @@ isAuthenticated = (req, res, next) => {
     }
     res.redirect('/login');
 }
-app.get('/', isAuthenticated, (req, res) => {
-    res.render('comm/index', {
-        successf: req.flash('successf')
-    });
+const imageExtensions = /\.(jpg|jpeg|png|gif|bmp|tiff|svg|webp|heic|ico)$/i;
+app.get('/', isAuthenticated, async(req, res) => {
+    try {
+        const posts = await Post.find().populate('userId', 'name email avatar').exec();
+        res.render('comm/index', {
+            successf: req.flash('successf'),
+            posts,
+            imageExtensions
+        });
+    } catch (ex) {
+        
+    }
 });
 //========user route=========
 const users = require('./routes/user-route');
