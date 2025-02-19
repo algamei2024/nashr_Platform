@@ -3,6 +3,7 @@ const router = express.Router();
 const multer = require('multer');
 const passport = require('passport');
 const User = require('../models/User');
+const Post = require('../models/Post');
 const fs = require('fs');
 const path = require('path');
 //=========================================
@@ -100,14 +101,25 @@ router.post('/descrip', isAuthenticated, (req, res) => {
         description: req.body.description
     };
     User.updateOne({ _id: req.user._id }, newFields).then((result) => {
-        console.log('yes e');
+        //console.log('yes e');
         res.redirect('/');
     }).catch((err) => {
         res.redirect('/descrip');
     });
 });
-router.get('/logout', (req, res) => {
+router.get('/logout',(req, res) => {
     req.logout;
     res.redirect('/login');
+});
+const imageExtensions = /\.(jpg|jpeg|png|gif|bmp|tiff|svg|webp|heic|ico)$/i;
+router.get('/user/about/:userId', async (req, res) => {
+    const userId = req.params.userId;
+    const user = await User.findById(userId);
+    const posts = await Post.find({ userId: userId }).populate('lastLike','name');
+    res.render('user/about', {
+        user,
+        posts,
+        imageExtensions
+    });
 });
 module.exports = router;

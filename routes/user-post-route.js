@@ -8,6 +8,8 @@ const path = require('path');
 const { route } = require('./user-route');
 const { runInNewContext } = require('vm');
 const User = require('../models/User');
+const Comment = require('../models/Comment');
+const { count } = require('console');
 
 
 //=========================================
@@ -178,33 +180,108 @@ router.post('/delete', isAuthenticated, (req, res) => {
 router.get('/like/:postId', isAuthenticated, (req, res) => {
     const { postId } = req.params;
     const userId = req.user._id;
-    Post.findById(postId).then((post) => {
+    //=
+    countLikes = 0;
+    Post.findById(postId).then(async(post) => {
         const index = post.likes.indexOf(userId);
         if (index !== -1) {
+            lastLikeUser = null;
             post.likes.splice(index, 1);
+            countLikes = post.likes.length;
             if (index == 0) {
-                post.lastLikeBy = '';
+                post.lastLike = '';
             }
             else {
-                post.lastLikeBy = req.user.name;
+                post.lastLike = post.likes[index - 1];
+                lastLikeUser = await User.findById(post.likes[index - 1]);
             }
+            post.save().then((result) => {
+                return res.status(200).json({
+                    message: "no",
+                    countLikes,
+                    lastLikeUser: lastLikeUser.name
+                });
+            }).catch((error) => { });
         }
         else {
             post.likes.push(userId);
-            post.lastLikeBy = req.user.name;
+            post.lastLike = req.user._id;
+            countLikes = post.likes.length;
+            post.save().then((result) => {
+                return res.status(200).json({
+                    message: "yes",
+                    countLikes
+                });
+            }).catch((error) => { });
         }
-        post.save().then((result) => {
-            return res.status(200);
-        }).catch((error)=>{});
+       
     }).catch((err) => {
-        
+
     });
 });
-router.post('/like/users', isAuthenticated, async(req, res) => {
+router.post('/like/users', isAuthenticated, async (req, res) => {
     const postId = req.body.postId;
     const postLikeUser = await Post.findById(postId).populate('likes', 'name avatar').exec();
     res.render('comm/likesP', {
         postLikeUser
     });
+});
+router.post('/comment', isAuthenticated, async (req, res) => {
+    const postId = req.body.postId;
+    let post = await Post.findById(postId).populate('userId', 'name avatar').populate('lastLike','name avatar').exec();
+    const comments = await Comment.find({ postId: postId }).populate('userId', 'name avatar');
+    post.comments = comments;
+    res.render('comm/comment.ejs', {
+        post,
+        imageExtensions,
+    });
+});
+router.post('/addComment', isAuthenticated, (req, res) => {
+    const postId = req.body.postId;
+    const userId = req.user._id;
+    const comment = req.body.comment;
+    let newComment = new Comment();
+    newComment.postId = postId;
+    newComment.userId = userId;
+    newComment.comment = comment;
+    newComment.save().then((comment) => {
+        res.redirect('/');
+    }).catch((err) => { });
+});
+router.post('/editComment', isAuthenticated, (req, res) => {
+    const commentId = req.body.commentId;
+    const comment = req.body.comment;
+    Comment.findByIdAndUpdate(commentId, {
+        comment: comment
+    }).then(result => {
+        res.redirect('/');
+    }).catch(err => { })
+});
+router.post('/delComment', isAuthenticated, (req, res) => {
+    const commentId = req.body.commentId;
+    Comment.findOneAndDelete({ _id: commentId, userId: req.user._id }).then(result => {
+        res.redirect('/');
+    }).catch(err => { });
+});
+router.get('/comment/report/:commentId', isAuthenticated, async (req, res) => {
+    const commentId = req.params.commentId;
+    const userId = req.user._id;
+    try {
+        const comment = await Comment.findById(commentId);
+        if (!comment) {
+            throw new Error('Comment not found');
+        }
+        if (comment.report.length > 200) {
+            await Comment.findByIdAndDelete(commentId);
+        } else {
+            if (!comment.report.includes(userId)) {
+                comment.report.push(userId);
+                await comment.save();
+            }
+        }
+        res.redirect('/');
+    } catch (ex) {
+        res.redirect('/');
+    }
 });
 module.exports = router;

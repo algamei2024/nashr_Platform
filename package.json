@@ -9,6 +9,7 @@
   "author": "Mohammed Alagamie",
   "license": "ISC",
   "dependencies": {
+    "axios": "^1.7.9",
     "bcrypt-nodejs": "^0.0.3",
     "connect-flash": "^0.1.1",
     "ejs": "^3.1.10",

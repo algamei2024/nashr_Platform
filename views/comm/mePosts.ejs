@@ -15,7 +15,7 @@
     </div>
 </div>
 <div class="container-PostShow w-full pb-4">
- <%if(locals.user){%>
+    <%if(locals.user){%>
     <%posts.forEach((post)=>{%>
     <div class="container-post border-t-2 border-b-2 p-3">
         <div class="post-profile flex justify-between">
@@ -26,13 +26,13 @@
                 </div>
                 <div>
                     <h1><%= user.name%></h1>
-                    <p><%=post.updatedAt%></p>
                 </div>
             </div>
             <div class="relative">
                 <div class="cursor-pointer flex items-center hover:bg-slate-300 rounded-2xl" onclick="menuPost(this)">
-                   <div id="men-open" class="">
-                        <svg width="40px" height="40px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <div id="men-open" class="">
+                        <svg width="40px" height="40px" viewBox="0 0 24 24" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
                             <path
                                 d="M19 13C19.5523 13 20 12.5523 20 12C20 11.4477 19.5523 11 19 11C18.4477 11 18 11.4477 18 12C18 12.5523 18.4477 13 19 13Z"
                                 stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
@@ -43,25 +43,28 @@
                                 d="M5 13C5.55228 13 6 12.5523 6 12C6 11.4477 5.55228 11 5 11C4.44772 11 4 11.4477 4 12C4 12.5523 4.44772 13 5 13Z"
                                 stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                         </svg>
-                   </div>
-                   <div id="men-close" class="hidden">
-                        <svg width="40px" height="40px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    </div>
+                    <div id="men-close" class="hidden">
+                        <svg width="40px" height="40px" viewBox="0 0 24 24" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
                             <g id="Menu / Close_SM">
-                                <path id="Vector" d="M16 16L12 12M12 12L8 8M12 12L16 8M12 12L8 16" stroke="#000000" stroke-width="2"
-                                    stroke-linecap="round" stroke-linejoin="round" />
+                                <path id="Vector" d="M16 16L12 12M12 12L8 8M12 12L16 8M12 12L8 16" stroke="#000000"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                             </g>
                         </svg>
-                   </div>
+                    </div>
                 </div>
                 <div class="hidden flex flex-col bg-slate-400 absolute z-50 top-[100%] left-[100%] rounded-md
                                 p-2" id="mPost">
                     <form action="/post/editPost" method="post">
                         <input type="hidden" name="postId" value="<%=post.id%>">
-                        <button class="block px-4 py-2 text-sm text-gray-700 hover:bg-slate-300 w-40 text-right" type="submit">تعديل</button>
+                        <button class="block px-4 py-2 text-sm text-gray-700 hover:bg-slate-300 w-40 text-right"
+                            type="submit">تعديل</button>
                     </form>
                     <form action="/post/delete" method="post">
                         <input type="hidden" name="postId" value="<%=post.id%>">
-                        <button class="block px-4 py-2 text-sm text-gray-700 hover:bg-slate-300 w-40 text-right" type="submit">حذف</button>
+                        <button class="block px-4 py-2 text-sm text-gray-700 hover:bg-slate-300 w-40 text-right"
+                            type="submit">حذف</button>
                     </form>
                 </div>
             </div>
@@ -73,21 +76,71 @@
         </div>
         <div class="post-audio flex flex-wrap gap-3">
             <%post.files.forEach((file)=>{%>
-                <%if(file.match(imageExtensions)){%>
-                <img class="rounded-md pt-1"
-                    src="<%=file.replace('uploads','')%>"
-                    alt="img">
-                <%}else{%>
-                    <video class="rounded-md pt-1" controls>
-                        <source src="<%=file.replace('uploads','')%>" type="video/mp4">
-                        <source src="<%=file.replace('uploads','')%>" type="video/ogg">
-                        متصفحك لا يدعم تشغيل الفيديو.
-                    </video>
-                <%}%>
+            <%if(file.match(imageExtensions)){%>
+            <img class="rounded-md pt-1" src="<%=file.replace('uploads','')%>" alt="img">
+            <%}else{%>
+            <video class="rounded-md pt-1" controls>
+                <source src="<%=file.replace('uploads','')%>" type="video/mp4">
+                <source src="<%=file.replace('uploads','')%>" type="video/ogg">
+                متصفحك لا يدعم تشغيل الفيديو.
+            </video>
+            <%}%>
              <%})%>
         </div>
+        <div class="flex pt-4">
+            <%if(post.likes.length > 0){%>
+            <form action="/post/like/users" method="post">
+                <input type="hidden" name="postId" value="<%=post._id%>">
+                <button class="text-center">
+                    <span class="likePost">
+                        <%=post.likes.length%>
+                        <%=post.lastLike._id == locals.user.id? 'انت':post.lastLike.name%>
+                        <%=post.likes.length>1?'واخرون':''%></span>
+                </button>
+            </form>
+            <%}%>
+                </div>
+                <div class="flex justify-between p-4 pt-0">
+                    <div>
+                       <button onclick="addLike(this,'<%=encodeURIComponent(post._id)%>')">
+            <svg width="40px" height="40px" viewBox="0 0 24 24"
+                fill="<%=post.likes.includes(locals.user.id)? '#000000':'none'%>" xmlns="http://www.w3.org/2000/svg">
+                <path
+                    d="M7.47998 18.35L10.58 20.75C10.98 21.15 11.88 21.35 12.48 21.35H16.28C17.48 21.35 18.78 20.45 19.08 19.25L21.48 11.95C21.98 10.55 21.08 9.34997 19.58 9.34997H15.58C14.98 9.34997 14.48 8.84997 14.58 8.14997L15.08 4.94997C15.28 4.04997 14.68 3.04997 13.78 2.74997C12.98 2.44997 11.98 2.84997 11.58 3.44997L7.47998 9.54997"
+                    stroke="#292D32" stroke-width="1.5" stroke-miterlimit="10" />
+                <path
+                    d="M2.38 18.35V8.55002C2.38 7.15002 2.98 6.65002 4.38 6.65002H5.38C6.78 6.65002 7.38 7.15002 7.38 8.55002V18.35C7.38 19.75 6.78 20.25 5.38 20.25H4.38C2.98 20.25 2.38 19.75 2.38 18.35Z"
+                    stroke="#292D32" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            </button>
+        </div>
+        <div class="hover:bg-gray-200 rounded-xl">
+            <form action="/post/comment" method="post">
+                <input type="hidden" name="postId" value="<%= post._id%>">
+                <button>
+                    <svg width="40px" height="40px" viewBox="0 -0.5 25 25" fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd"
+                            d="M5.5 12C5.49988 14.613 6.95512 17.0085 9.2741 18.2127C11.5931 19.4169 14.3897 19.2292 16.527 17.726L19.5 18V12C19.5 8.13401 16.366 5 12.5 5C8.63401 5 5.5 8.13401 5.5 12Z"
+                            stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                        <path
+                            d="M9.5 13.25C9.08579 13.25 8.75 13.5858 8.75 14C8.75 14.4142 9.08579 14.75 9.5 14.75V13.25ZM13.5 14.75C13.9142 14.75 14.25 14.4142 14.25 14C14.25 13.5858 13.9142 13.25 13.5 13.25V14.75ZM9.5 10.25C9.08579 10.25 8.75 10.5858 8.75 11C8.75 11.4142 9.08579 11.75 9.5 11.75V10.25ZM15.5 11.75C15.9142 11.75 16.25 11.4142 16.25 11C16.25 10.5858 15.9142 10.25 15.5 10.25V11.75ZM9.5 14.75H13.5V13.25H9.5V14.75ZM9.5 11.75H15.5V10.25H9.5V11.75Z"
+                            fill="#000000" />
+                    </svg>
+                </button>
+            </form>
+        </div>
+        <div class="hover:bg-gray-200 rounded-xl">
+            <svg width="40px" height="40px" viewBox="0 0 24 24" id="share" xmlns="http://www.w3.org/2000/svg">
+                <rect id="Rectangle_3" data-name="Rectangle 3" width="24" height="24" fill="none" />
+                <path id="Rectangle" d="M12,4V0l8,7-8,7V10S0,9.069,0,14.737C0,3.4,12,4,12,4Z" transform="translate(2 5)"
+                    fill="none" stroke="#000000" stroke-miterlimit="10" stroke-width="1.5" />
+            </svg>
+        </div>
     </div>
-    <%})%>
- <%}%>
 </div>
+<%})%>
+<%}%>
+</div>
+<script src="/axios/dist/axios.js"></script>
 <script src="/js/post.js"></script>

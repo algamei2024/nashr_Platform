@@ -16,14 +16,14 @@
                 <div class="relative ml-3">
                     <div class="profile flex">
                         <button type="button"
-                            class="relative flex rounded-full bg-gray-800 text-sm focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 focus:outline-hidden"
+                            class="relative flex rounded-full text-sm focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 focus:outline-hidden"
                             id="user-menu-button" aria-expanded="false" aria-haspopup="true">
                             <%if(locals.user){%>
                             <img class="size-8 rounded-full" src="<%= user.avatar.replace('uploads','')%>" alt="logo">
                             <%}%>
                         </button>
                         <%if(locals.user){%>
-                            <div class="text-white pr-2 flex items-center">
+                            <div class="text-white pr-2 flex items-center cursor-pointer">
                                 <h1>
                                     <%= user.name %>
                                 </h1>
@@ -44,8 +44,6 @@
                         </div>
                         <a href="/profile" class="block px-4 py-2 text-sm text-gray-700 hover:bg-slate-300" role="menuitem" tabindex="-1"
                             id="user-menu-item-0">ملفك الشخصي</a>
-                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-slate-300" role="menuitem" tabindex="-1"
-                            id="user-menu-item-1">الاعدادات</a>
                         <a href="/logout" class="block px-4 py-2 text-sm text-gray-700 hover:bg-slate-300" role="menuitem" tabindex="-1"
                             id="user-menu-item-2">تسجيل الخروج</a>
                     </div>
@@ -74,10 +72,8 @@
             <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
                 <div class="hidden sm:ml-6 sm:block">
                     <div class="flex space-x-4">
-                        <a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 border border-transparent hover:border-white hover:text-orange-400"
+                        <a href="/user/about/<%=user._id%>" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 border border-transparent hover:border-white hover:text-orange-400"
                             aria-current="page">صفحتي الشخصية</a>
-                        <a href="#"
-                            class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 border border-transparent hover:border-white hover:text-orange-400">اصدقائي</a>
                         <a href="/post/mePosts"
                             class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 border border-transparent hover:border-white hover:text-orange-400">منشوراتي</a>
                     </div>

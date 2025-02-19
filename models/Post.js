@@ -16,8 +16,9 @@ const postSchema = new mongoose.Schema({
         default:0
     },
     likes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
-    lastLikeBy: {
-        type: String,
+    lastLike: {
+        type: mongoose.Types.ObjectId,
+        ref: 'User'
     },
     createdAt: {
         type: Date,

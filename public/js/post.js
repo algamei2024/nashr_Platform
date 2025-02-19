@@ -14,6 +14,94 @@ comment && comment.addEventListener('input', function () {
         this.style.height = (this.scrollHeight) + 'px';
     }
 });
+//=====
+const posts = document.querySelectorAll('.post');
+
+posts.forEach(post => {
+    let menuComment = post.firstElementChild;
+    let pressTimer;
+
+    post.addEventListener('mousedown', function () {
+        post.classList.add('bg-gray-200');
+        pressTimer = setTimeout(function () {
+            menuComment.classList.remove('hidden');
+        }, 1000);
+    });
+
+    post.addEventListener('touchstart', function () {
+        post.classList.add('bg-gray-200');
+        pressTimer = setTimeout(function () {
+            menuComment.classList.remove('hidden');
+        }, 1000);
+    });
+
+    post.addEventListener('mouseup', clearTimer);
+    post.addEventListener('mouseleave', clearTimer);
+    post.addEventListener('touchend', clearTimer);
+    post.addEventListener('touchcancel', clearTimer);
+
+    function clearTimer() {
+        clearTimeout(pressTimer);
+    }
+});
+
+document.addEventListener('click', function (event) {
+    posts.forEach(post => {
+        post.classList.remove('bg-gray-200');
+        let menuComment = post.firstElementChild;
+        if (!post.contains(event.target)) {
+            menuComment.classList.add('hidden');
+        }
+    });
+});
+
+document.addEventListener('touchstart', function (event) {
+    posts.forEach(post => {
+        post.classList.remove('bg-gray-200');
+        let menuComment = post.firstElementChild;
+        if (!post.contains(event.target)) {
+            menuComment.classList.add('hidden');
+        }
+    });
+});
+//edit comment
+function editComment(ele, commentId, comment) {
+    ele.parentNode.classList.add('hidden');
+    //==========
+    console.log(decodeURIComponent(commentId))
+    //=
+    textAreaComment = document.getElementById('comment');
+    textAreaComment.value = comment;
+    //=
+    textAreaComment.previousElementSibling.name = "commentId";
+    textAreaComment.previousElementSibling.value = decodeURIComponent(commentId);
+    //=
+    textAreaComment.parentNode.action = "/post/editComment";
+}
+//=addLike
+async function addLike(ele, postId) {
+    const likePost =  ele.parentNode.parentNode.previousElementSibling.querySelector('.likePost');
+    axios.get('/post/like/' + decodeURIComponent(postId)).then(response => {
+        if (response.status === 200 && response.data.message == "yes") {
+            if (response.data.countLikes>1)
+                likePost.innerHTML = response.data.countLikes + ' انت واخرون';
+            else
+            likePost.innerHTML = response.data.countLikes + 'انت';
+                
+            ele.firstElementChild.setAttribute('fill', '#000000');
+        } 
+        else if (response.status === 200 && response.data.message == 'no'){
+            if (response.data.countLikes > 1)
+                likePost.innerHTML = response.data.countLikes + response.data.lastLikeUser + ' واخرون';
+            else
+                likePost.innerHTML = response.data.countLikes + ' '+ response.data.lastLikeUser;
+            ele.firstElementChild.setAttribute('fill', 'none');
+        }
+        else {
+            document.body.innerHTML = response.data;
+        }
+    }).catch(err=>{});
+}
 //=================
 //filepond
 FilePond.registerPlugin(

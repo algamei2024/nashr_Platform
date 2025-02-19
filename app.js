@@ -43,7 +43,7 @@ isAuthenticated = (req, res, next) => {
 const imageExtensions = /\.(jpg|jpeg|png|gif|bmp|tiff|svg|webp|heic|ico)$/i;
 app.get('/', isAuthenticated, async(req, res) => {
     try {
-        const posts = await Post.find().populate('userId', 'name email avatar').exec();
+        const posts = await Post.find().populate('userId', 'name email avatar').populate('lastLike','name avatar').exec();
         res.render('comm/index', {
             successf: req.flash('successf'),
             posts,
@@ -63,5 +63,5 @@ app.get('/test', (req, res) => {
     res.render('comm/test');
 });
 app.listen(3000, () => {
-    console.log('server listen');
+    //console.log('server listen');
 })

@@ -20,9 +20,22 @@ const userSchema = new mongoose.Schema({
     description: {
         type: String,
         required: true
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now,
+        required: true
+    },
+    updatedAt: {
+        type: Date,
+        default: Date.now,
+        required: true
     }
 });
-
+userSchema.pre('save', function (next) {
+    this.updatedAt = Date.now();
+    next();
+});
 userSchema.methods.hashPassword = (password) => {
     return bcrypt.hashSync(password, bcrypt.genSaltSync(10));
 }
