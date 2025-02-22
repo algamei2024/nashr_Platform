@@ -8,8 +8,7 @@ textarea && textarea.addEventListener('input', function () {
 //=== comment
 const comment = document.getElementById('comment');
 comment && comment.addEventListener('input', function () {
-    if (this.scrollHeight < 135)
-    {
+    if (this.scrollHeight < 135) {
         this.style.height = 'auto';
         this.style.height = (this.scrollHeight) + 'px';
     }
@@ -80,28 +79,61 @@ function editComment(ele, commentId, comment) {
 }
 //=addLike
 async function addLike(ele, postId) {
-    const likePost =  ele.parentNode.parentNode.previousElementSibling.querySelector('.likePost');
+    const likePost = ele.parentNode.parentNode.previousElementSibling.querySelector('.likePost');
     axios.get('/post/like/' + decodeURIComponent(postId)).then(response => {
         if (response.status === 200 && response.data.message == "yes") {
-            if (response.data.countLikes>1)
+            if (response.data.countLikes > 1)
                 likePost.innerHTML = response.data.countLikes + ' انت واخرون';
             else
-            likePost.innerHTML = response.data.countLikes + 'انت';
-                
+                likePost.innerHTML = response.data.countLikes + 'انت';
+
             ele.firstElementChild.setAttribute('fill', '#000000');
-        } 
-        else if (response.status === 200 && response.data.message == 'no'){
+        }
+        else if (response.status === 200 && response.data.message == 'no') {
             if (response.data.countLikes > 1)
                 likePost.innerHTML = response.data.countLikes + response.data.lastLikeUser + ' واخرون';
             else
-                likePost.innerHTML = response.data.countLikes + ' '+ response.data.lastLikeUser;
+                likePost.innerHTML = response.data.countLikes + ' ' + response.data.lastLikeUser;
             ele.firstElementChild.setAttribute('fill', 'none');
         }
         else {
             document.body.innerHTML = response.data;
         }
-    }).catch(err=>{});
+    }).catch(err => { });
 }
+//report
+let reportMenu = document.querySelectorAll('.report-menu');
+reportMenu.forEach(rMenu => {
+    rMenu.addEventListener('click', function () {
+        if (this.nextElementSibling.classList.contains('hidden'))
+            this.nextElementSibling.classList.remove('hidden');
+        setTimeout(() => {
+            this.nextElementSibling.style = '1';
+        },100)
+    });
+});
+let reportCheck = document.querySelectorAll('form.report label');
+reportCheck.forEach(report => {
+    let x = 0;
+    report.addEventListener('click', function () {
+        if (x > 0)
+        {
+            x = 0;
+            return;
+        }
+        x++;
+        if (this.style.backgroundColor == 'orange')
+            this.style.backgroundColor = 'black';
+        else
+            this.style.backgroundColor = 'orange';
+    })
+});
+let reportClose = document.querySelectorAll('.report-close');
+reportClose.forEach(rClose => {
+    rClose.addEventListener('click', function () {
+        this.parentNode.parentNode.classList.add('hidden');
+    });
+});
 //=================
 //filepond
 FilePond.registerPlugin(
@@ -214,7 +246,7 @@ try {
                 document.getElementById('progress-bar').style.width = `${progressPercentage}%`;
             }
             else {
-            
+
             }
         }
         document.body.innerHTML = componentSuccess();
@@ -224,7 +256,7 @@ try {
 
     });
 } catch (error) {
-    
+
 }
 //===================================
 let filesDel = [];
@@ -254,7 +286,7 @@ document.getElementById('update').addEventListener('click', async function (e) {
         if (uploadedFiles === 0) {
             let countF = (totalFiles - filesDel.length) + "";
             formData.append('countF', countF);
-            formData.append('fileDel',JSON.stringify(filesDel));
+            formData.append('fileDel', JSON.stringify(filesDel));
         }
         const response = await fetch('/post/update', {
             method: 'POST',
@@ -269,7 +301,7 @@ document.getElementById('update').addEventListener('click', async function (e) {
             document.getElementById('progress-bar').style.width = `${progressPercentage}%`;
         }
         else {
-            
+
         }
     }
     document.body.innerHTML = componentSuccess();

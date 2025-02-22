@@ -284,4 +284,17 @@ router.get('/comment/report/:commentId', isAuthenticated, async (req, res) => {
         res.redirect('/');
     }
 });
+router.post('/report', isAuthenticated, (req, res) => {
+    const reportType = req.body.report;
+    console.log(typeof (reportType))
+    if (typeof (reportType) == 'object')
+    {
+        reportType.forEach(report => {
+            console.log(typeof (report));
+        })
+    }
+    else {
+        console.log(reportType)
+    }
+});
 module.exports = router;

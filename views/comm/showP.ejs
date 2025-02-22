@@ -53,7 +53,7 @@
             <%}%>
         </div>
         <div class="flex justify-between p-4 pt-0">
-            <div>
+            <div class="flex items-center p-3">
                <button onclick="addLike(this,'<%=encodeURIComponent(post._id)%>')">
                     <svg width="40px" height="40px" viewBox="0 0 24 24" fill="<%=post.likes.includes(locals.user.id)? '#000000':'none'%>" xmlns="http://www.w3.org/2000/svg">
                         <path
@@ -65,7 +65,7 @@
                     </svg>
                 </button>
             </div>
-            <div class="hover:bg-gray-200 rounded-xl">
+            <div class="hover:bg-gray-200 rounded-md flex items-center p-3">
                 <form action="/post/comment" method="post">
                     <input type="hidden" name="postId" value="<%= post._id%>">
                     <button>
@@ -80,7 +80,43 @@
                     </button>
                 </form>
             </div>
-            <div class="hover:bg-gray-200 rounded-xl">
+            <div class="report-menu flex items-center p-3 rounded-md hover:bg-gray-200">
+                <svg width="25px" height="25px" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="32" height="32" x="240" y="352" fill="var(--ci-primary-color, #000000)" class="ci-primary" />
+                    <polygon fill="var(--ci-primary-color, #000000)"
+                        points="355.411 16 156.589 16 121.653 53.771 144.298 76.416 170.58 48 341.42 48 464 180.53 464 331.47 432.937 365.055 455.581 387.7 496 344 496 168 355.411 16"
+                        class="ci-primary" />
+                    <polygon fill="var(--ci-primary-color, #000000)" points="240 128 240 172.118 272 204.118 272 128 240 128"
+                        class="ci-primary" />
+                    <path fill="var(--ci-primary-color, #000000)"
+                        d="M16,16V38.627l62.164,62.164L16,168V344L156.589,496H355.411l56.681-61.281L473.373,496H496V473.373L38.627,16ZM341.42,464H170.58L48,331.47V180.53l52.808-57.095L240,262.627V320h32V294.627L389.447,412.074Z"
+                        class="ci-primary" />
+                </svg>
+            </div>
+            <div class="hidden bg-slate-200 p-8 fixed bottom-3 right-4 w-[80%] z-50" style="opacity: 0; transition: all 3s ease-in-out;">
+                <div class="text-left font-bold text-5xl">
+                    <button class="report-close pr-4 hover:text-orange-600">x</button>
+                </div>
+                <form class="report" action="/post/report" method="post">
+                    <h1 class="mb-8 font-bold">إبلاغ عن منشور</h1>
+                    <div class="flex flex-wrap gap-3">
+                        <label class="text-white pl-2 pr-2 rounded-full cursor-pointer" style="background-color:orange;"> <input
+                                type="checkbox" hidden name="report"  value="1" id="1">محتوى زائف</label>
+                        <label class="text-white pl-2 pr-2 rounded-full cursor-pointer" style="background-color: orange;"> <input
+                                type="checkbox" hidden name="report" value="2" id="2">محتوى غير مرغوب فيه</label>
+                        <label class="text-white pl-2 pr-2 rounded-full cursor-pointer" style="background-color: orange;"> <input
+                                type="checkbox" hidden name="report" value="3" id="3">إرهاب</label>
+                        <label class="text-white pl-2 pr-2 rounded-full cursor-pointer" style="background-color: orange;"> <input
+                                type="checkbox" hidden name="report" value="4" id="4">محتوى غير قانوني</label>
+                    </div>
+                    <div class="mt-10">
+                        <button
+                            class="border-2 border-orange-600 rounded-full p-3 font-bold hover:bg-orange-200 hover:border-lime-600"
+                            type="submit">إبلاغ</button>
+                    </div>
+                </form>
+            </div>
+            <div class="hover:bg-gray-200 rounded-md p-3 flex items-center">
                 <svg width="40px" height="40px" viewBox="0 0 24 24" id="share" xmlns="http://www.w3.org/2000/svg">
                     <rect id="Rectangle_3" data-name="Rectangle 3" width="24" height="24" fill="none" />
                     <path id="Rectangle" d="M12,4V0l8,7-8,7V10S0,9.069,0,14.737C0,3.4,12,4,12,4Z"
