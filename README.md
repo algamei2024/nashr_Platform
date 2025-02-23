@@ -8,6 +8,8 @@
 <img src="./nashr/1739752243500-Screenshot_20250216_221918_Chrome.jpg" alt="photo of project" style="border-radius: 15px;"/>
 <img src="./nashr/1739752240720-Screenshot_20250216_221927_Chrome.jpg" alt="photo of project" style="border-radius: 15px;"/>
 <img src="./nashr/1740347641756-Screenshot_20250224_005330_Chrome.jpg" alt="photo of project" style="border-radius: 15px;"/>
+<img src="./nashr/1740347748321-Screenshot_20250224_005524_Chrome.jpg" alt="photo of project" style="border-radius: 15px;"/>
+<img src="./nashr/1740347749887-Screenshot_20250224_005515_Chrome.jpg" alt="photo of project" style="border-radius: 15px;"/>
 
 # about project
 nasher is platform for posting and sharing whatever you want like post or post with photos and video any media you can sharing.
