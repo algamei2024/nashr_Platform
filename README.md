@@ -1,6 +1,5 @@
 # photos from project
-<img src="./nashr/1739752270470-Screenshot_20250216_221753_Chrome.jpg" alt="photo of project" style="border-radius: 15px;" width="200px"/>
-<img src="./nashr/1739752269718-Screenshot_20250216_221800_Chrome.jpg" alt="photo of project" style="border-radius: 15px;" width="200px"/>
+<img src="./nashr/1739752270470-Screenshot_20250216_221753_Chrome.jpg" alt="photo of project" style="border-radius: 15px;" width="200px"/><img src="./nashr/1739752269718-Screenshot_20250216_221800_Chrome.jpg" alt="photo of project" style="border-radius: 15px;" width="200px"/>
 <img src="./nashr/1739752264073-Screenshot_20250216_221819_Chrome.jpg" alt="photo of project" style="border-radius: 15px;" width="200px"/>
 <img src="./nashr/1739752252815-Screenshot_20250216_221850_Chrome.jpg" alt="photo of project" style="border-radius: 15px;" width="200px"/>
 <img src="./nashr/1739752248180-Screenshot_20250216_221900_Chrome.jpg" alt="photo of project" style="border-radius: 15px;" width="200px"/>
