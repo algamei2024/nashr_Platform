@@ -9,6 +9,7 @@ const { route } = require('./user-route');
 const { runInNewContext } = require('vm');
 const User = require('../models/User');
 const Comment = require('../models/Comment');
+const ReportPost = require('../models/ReportPost');
 const { count } = require('console');
 
 
@@ -35,13 +36,16 @@ router.get('/create', isAuthenticated, (req, res) => {
 
 router.post('/create', upload.single('file'), (req, res) => {
     //countF ممكن كحماية يعني كلما يرفع ملف ينقص العدد الي ان يصبح 0 واذا اصبح صفر خلاص ما عاد اخليه يرفع
-    if (req.body.postId === "none") {
+    if (req.body.postId === "none" || req.body.postId === '0') {
         let newPost = new Post();
         newPost.userId = req.user._id;
         newPost.content = req.body.content;
-        newPost.files = [req.file.path];
-        let countFile = parseInt(req.body.countF);
-        newPost.countF = countFile;
+        if (req.body.postId != '0')
+        {
+            newPost.files = [req.file.path];
+            let countFile = parseInt(req.body.countF);
+            newPost.countF = countFile;
+        }
         newPost.save().then((post) => {
             let postId = post._id;
             res.status(200).json({
@@ -74,7 +78,7 @@ router.post('/create', upload.single('file'), (req, res) => {
 
 const imageExtensions = /\.(jpg|jpeg|png|gif|bmp|tiff|svg|webp|heic|ico)$/i;
 router.get('/mePosts', isAuthenticated, (req, res) => {
-    Post.find({ userId: req.user._id }).then((posts) => {
+    Post.find({ userId: req.user._id, show: '1' }).then((posts) => {
         res.render('comm/mePosts', {
             posts: posts,
             imageExtensions: imageExtensions
@@ -102,13 +106,13 @@ router.post('/update', upload.single('file'), (req, res) => {
         fileDel.forEach((file) => {
             //del from storage
             filePath = path.join(__dirname, '../' + file);
-            console.log(filePath);
+            //console.log(filePath);
             fs.unlink(filePath, (error) => {
                 if (error) {
-                    console.error('حدث خطأ أثناء حذف الملف:', err);
+                    //console.error('حدث خطأ أثناء حذف الملف:', err);
                 }
                 else {
-                    console.log('تم حذف الملف بنجاح', filePath);
+                    //console.log('تم حذف الملف بنجاح', filePath);
                     //del from database
                     Post.findByIdAndUpdate(postId, {
                         $pull: { files: file }
@@ -153,28 +157,34 @@ router.post('/update', upload.single('file'), (req, res) => {
 });
 //delete post
 router.post('/delete', isAuthenticated, (req, res) => {
-    Post.findById(req.body.postId).then((post) => {
-        let files = post.files;
-        files.forEach((file) => {
-            filePath = path.join(__dirname, '../' + file);
-            console.log(filePath);
-            fs.unlink(filePath, (error) => {
-                if (error) {
-                    console.error('حدث خطأ أثناء حذف الملف:', err);
-                }
-                else {
-                    console.log('تم حذف الملف بنجاح', filePath);
-                }
-            });
-        });
-    }).catch((err) => {
+    Post.findById(req.body.postId).then(post => {
+        post.show = '0';
+        post.save();
         res.redirect('/');
-    });
-    Post.deleteOne({ _id: req.body.postId }).then((post) => {
-        res.redirect('/post/mePosts');
-    }).catch((error) => {
-        console.log('error');
-    });
+    }).catch(err=>{});
+    // Post.findById(req.body.postId).then((post) => {
+    //     let files = post.files;
+    //     files.forEach((file) => {
+    //         filePath = path.join(__dirname, '../' + file);
+    //         console.log(filePath);
+    //         fs.unlink(filePath, (error) => {
+    //             if (error) {
+    //                 console.error('حدث خطأ أثناء حذف الملف:', err);
+    //             }
+    //             else {
+    //                 console.log('تم حذف الملف بنجاح', filePath);
+    //             }
+    //         });
+    //     });
+    // }).catch((err) => {
+    //     res.redirect('/');
+    // });
+    // Post.deleteOne({ _id: req.body.postId }).then(async (post) => {
+    //     await Comment.findOneAndDelete({postId: req.body.postId});
+    //     res.redirect('/post/mePosts');
+    // }).catch((error) => {
+    //     console.log('error');
+    // });
 });
 //post like
 router.get('/like/:postId', isAuthenticated, (req, res) => {
@@ -229,7 +239,7 @@ router.post('/like/users', isAuthenticated, async (req, res) => {
 router.post('/comment', isAuthenticated, async (req, res) => {
     const postId = req.body.postId;
     let post = await Post.findById(postId).populate('userId', 'name avatar').populate('lastLike','name avatar').exec();
-    const comments = await Comment.find({ postId: postId }).populate('userId', 'name avatar');
+    const comments = await Comment.find({ postId: postId, show: '1' }).populate('userId', 'name avatar');
     post.comments = comments;
     res.render('comm/comment.ejs', {
         post,
@@ -272,7 +282,8 @@ router.get('/comment/report/:commentId', isAuthenticated, async (req, res) => {
             throw new Error('Comment not found');
         }
         if (comment.report.length > 200) {
-            await Comment.findByIdAndDelete(commentId);
+            comment = await Comment.findById(commentId);
+            comment.show = '0';
         } else {
             if (!comment.report.includes(userId)) {
                 comment.report.push(userId);
@@ -284,17 +295,52 @@ router.get('/comment/report/:commentId', isAuthenticated, async (req, res) => {
         res.redirect('/');
     }
 });
-router.post('/report', isAuthenticated, (req, res) => {
-    const reportType = req.body.report;
-    console.log(typeof (reportType))
-    if (typeof (reportType) == 'object')
+//share post
+router.get('/sharePost/:postId', async(req, res) => {
+    const postId = req.params.postId;
+    let post = await Post.findById(postId).populate('userId', 'name avatar').populate('lastLike', 'name avatar').exec();
+    const comments = await Comment.find({ postId: postId, show: '1' }).populate('userId', 'name avatar');
+    post.comments = comments;
+    res.render('comm/sharePost.ejs', {
+        post,
+        imageExtensions,
+    });
+});
+//
+router.post('/report', isAuthenticated, async(req, res) => {
+    const postId = req.body.postId;
+    const userId = req.user._id;
+    const report = req.body.report;
+    //return report post
+    const reportCounts = await ReportPost.find({ postId: postId });
+    //console.log(reportCounts.length)
+    if (reportCounts.length > 600) {
+        //return post that have report and make it not show
+        const post = await Post.findById(postId);
+        post.show = '0';
+        await post.save();
+    }
+    let reportUser = await ReportPost.findOne({ userId: userId, postId: postId });
+    if (reportUser == null)
     {
-        reportType.forEach(report => {
-            console.log(typeof (report));
-        })
+        reportUser = new ReportPost();
+        reportUser.userId = userId;
+        reportUser.postId = postId;
     }
-    else {
-        console.log(reportType)
+    if (typeof (report) == 'object')
+        {
+            reportUser.reports = [...new Set([...reportUser.reports || [], ...report])];
+        }
+        else if (typeof (report) == 'string') {
+            if (reportUser.reports == undefined)
+            reportUser.reports = [report];
+        else
+        {
+            if (!reportUser.reports.includes(report))
+                reportUser.reports.push(report);
+        }
     }
+    await reportUser.save();
+    res.redirect('/');
 });
 module.exports = router;

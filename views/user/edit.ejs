@@ -22,7 +22,7 @@
 <div class="border-t-2 flex flex-col">
    <div class="border-t-2 border-b-2 p-3">
         <h1 class="text-lime-500 font-bold">*اسمك</h1>
-        <textarea class="w-full outline-none resize-none overflow-hidden h-8 pt-2 whitespace-nowrap" rows="1" name="name" id="name" placeholder="اسمك"><%if(locals.user){%><%= user.name%><%}%></textarea>
+        <input class="w-full outline-none h-8 pt-2" name="name" value="<%if(locals.user){%><%= user.name%><%}%>" id="name" placeholder="اسمك">
     </div>
     <div class="border-t-2 border-b-2 p-3">
         <h1 class="text-lime-500 font-bold">*النبذه التعريفية</h1>

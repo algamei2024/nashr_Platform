@@ -11,7 +11,7 @@
                 <g id="Icon" />
             </svg>
         </a>
-        <h1>منشور <%=post.userId.name%></h1>
+        <h1>منشور مشارك لـ <%=post.userId.name%></h1>
     </div>
 </div>
 <div class="container-post border-t-2 border-b-2 p-3">
@@ -44,18 +44,18 @@
     </div>
     <div class="flex pt-4">
         <%if(post.likes.length > 0){%>
-            <button class="text-center">
-                <span class="likePost">
-                    <%=post.likes.length%>
-                    <%=post.lastLike._id == locals.user.id? 'انت':post.lastLike.name%> و اخرون</span>
-            </button>
+        <button class="text-center">
+            <span class="likePost">
+                <%=post.likes.length%>
+                <%=post.lastLike._id == locals.user.id? 'انت':post.lastLike.name%> و اخرون</span>
+        </button>
         <%}%>
     </div>
     <div class="flex justify-between p-4 pt-0">
         <div>
-                <button onclick="addLike(this,'<%=encodeURIComponent(post._id)%>')">
+                <button>
         <svg width="40px" height="40px" viewBox="0 0 24 24"
-            fill="<%=post.likes.includes(locals.user.id)? '#000000':'none'%>" xmlns="http://www.w3.org/2000/svg">
+            fill="none" xmlns="http://www.w3.org/2000/svg">
             <path
                 d="M7.47998 18.35L10.58 20.75C10.98 21.15 11.88 21.35 12.48 21.35H16.28C17.48 21.35 18.78 20.45 19.08 19.25L21.48 11.95C21.98 10.55 21.08 9.34997 19.58 9.34997H15.58C14.98 9.34997 14.48 8.84997 14.58 8.14997L15.08 4.94997C15.28 4.04997 14.68 3.04997 13.78 2.74997C12.98 2.44997 11.98 2.84997 11.58 3.44997L7.47998 9.54997"
                 stroke="#292D32" stroke-width="1.5" stroke-miterlimit="10" />
@@ -86,13 +86,13 @@
 </div>
 <%post.comments.forEach((comment)=>{%>
 <div class="post m-4 flex rounded-md">
-        <img class="h-12 border w-12 rounded-full object-cover"
-            src="<%=comment.userId.avatar.replace('uploads','')%>" alt="comment-user">
-        <div class="p-2 bg-gray-200 rounded-xl">
-            <h1><%=comment.userId.name%></h1>
-            <p style="line-break: anywhere;">
-                <%=comment.comment%>
-            </p>
-        </div>
+    <img class="h-12 border w-12 rounded-full object-cover" src="<%=comment.userId.avatar.replace('uploads','')%>"
+        alt="comment-user">
+    <div class="p-2 bg-gray-200 rounded-xl">
+        <h1><%=comment.userId.name%></h1>
+        <p style="line-break: anywhere;">
+            <%=comment.comment%>
+        </p>
     </div>
-    <%})%>
+</div>
+<%})%>

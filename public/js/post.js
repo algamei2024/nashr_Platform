@@ -22,16 +22,18 @@ posts.forEach(post => {
 
     post.addEventListener('mousedown', function () {
         post.classList.add('bg-gray-200');
+        menuComment.classList.remove('hidden');
         pressTimer = setTimeout(function () {
-            menuComment.classList.remove('hidden');
-        }, 1000);
+            menuComment.style.opacity = '1';
+        }, 600);
     });
 
     post.addEventListener('touchstart', function () {
         post.classList.add('bg-gray-200');
+        menuComment.classList.remove('hidden');
         pressTimer = setTimeout(function () {
-            menuComment.classList.remove('hidden');
-        }, 1000);
+            menuComment.style.opacity = '1';
+        }, 600);
     });
 
     post.addEventListener('mouseup', clearTimer);
@@ -50,16 +52,22 @@ document.addEventListener('click', function (event) {
         let menuComment = post.firstElementChild;
         if (!post.contains(event.target)) {
             menuComment.classList.add('hidden');
+            setTimeout(() => {
+                menuComment.style.opacity = '0';
+            }, 200);
         }
     });
 });
 
 document.addEventListener('touchstart', function (event) {
     posts.forEach(post => {
-        post.classList.remove('bg-gray-200');
+        //post.classList.remove('bg-gray-200');
         let menuComment = post.firstElementChild;
         if (!post.contains(event.target)) {
             menuComment.classList.add('hidden');
+            setTimeout(() => {
+                menuComment.style.opacity = '0';
+            }, 200);
         }
     });
 });
@@ -108,7 +116,7 @@ reportMenu.forEach(rMenu => {
         if (this.nextElementSibling.classList.contains('hidden'))
             this.nextElementSibling.classList.remove('hidden');
         setTimeout(() => {
-            this.nextElementSibling.style = '1';
+            this.nextElementSibling.style.opacity = '1';
         },100)
     });
 });
@@ -131,9 +139,46 @@ reportCheck.forEach(report => {
 let reportClose = document.querySelectorAll('.report-close');
 reportClose.forEach(rClose => {
     rClose.addEventListener('click', function () {
-        this.parentNode.parentNode.classList.add('hidden');
+        this.parentNode.parentNode.style.opacity = '0';
+        setTimeout(() => {
+            this.parentNode.parentNode.classList.add('hidden');
+        }, 600)
     });
 });
+//share post
+function share(ele) {
+    ele.nextElementSibling.classList.toggle('hidden');
+}
+try {
+    document.querySelector('.close-share').addEventListener('click', function () {
+        this.parentElement.classList.add('hidden');
+    });
+} catch (err){};
+function shareWhatsapp(postId) {
+    const url = encodeURIComponent(window.location.host + '/post/sharePost/') + postId;
+    window.open(`https://api.whatsapp.com/send?text=${url}`,'_blank');
+}
+function shareCopyLink(postId) {
+    console.log(decodeURIComponent(postId));
+    const url = window.location.host + '/post/sharePost/' + postId;
+    try {
+        navigator.clipboard.writeText(url).then(function () {
+            alert('تم نسخ رابط المنشور');
+        });
+    }catch(err){}
+    const textarea = document.createElement('textarea');
+    textarea.value = url;
+    document.body.appendChild(textarea);
+    textarea.select();
+    try {
+        document.execCommand('copy');
+    } catch (err) { }
+    document.body.removeChild(textarea);
+}
+function shareTelegram(postId) {
+    const url = encodeURIComponent(window.location.host + '/post/sharePost/') + postId;
+    window.open(`https://t.me/share/url?url=${url}`, '_blank');
+}
 //=================
 //filepond
 FilePond.registerPlugin(
@@ -224,6 +269,23 @@ try {
 
         let postId = 'none';
         document.body.innerHTML = componentUpload();
+        //if user not upload any file
+        if (totalFiles < 1) {
+            postId = '0';
+            const formData = new FormData();
+            formData.append('content', post_text);
+            formData.append('postId', postId);
+            const response = await fetch('/post/create', {
+                method: 'POST',
+                body: formData,
+            });
+            if (response.ok) {
+                setTimeout(() => {
+                    window.location.pathname = '/';
+                }, 300);
+            }
+        }
+        //
         for (const file of files) {
             const formData = new FormData();
             formData.append('file', file.file);

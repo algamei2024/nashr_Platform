@@ -115,7 +115,7 @@ const imageExtensions = /\.(jpg|jpeg|png|gif|bmp|tiff|svg|webp|heic|ico)$/i;
 router.get('/user/about/:userId', async (req, res) => {
     const userId = req.params.userId;
     const user = await User.findById(userId);
-    const posts = await Post.find({ userId: userId }).populate('lastLike','name');
+    const posts = await Post.find({ userId: userId,show: '1' }).populate('lastLike','name');
     res.render('user/about', {
         user,
         posts,

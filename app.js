@@ -43,7 +43,7 @@ isAuthenticated = (req, res, next) => {
 const imageExtensions = /\.(jpg|jpeg|png|gif|bmp|tiff|svg|webp|heic|ico)$/i;
 app.get('/', isAuthenticated, async(req, res) => {
     try {
-        const posts = await Post.find().populate('userId', 'name email avatar').populate('lastLike','name avatar').exec();
+        const posts = await Post.find({show:'1'}).populate('userId', 'name email avatar').populate('lastLike','name avatar').exec();
         res.render('comm/index', {
             successf: req.flash('successf'),
             posts,
