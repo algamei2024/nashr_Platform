@@ -59,9 +59,10 @@ router.post('/edit', isAuthenticated, (req, res) => {
 router.get('/avatar', isAuthenticated, (req, res) => {
     res.render('user/avatar');
 });
+const uploadDir = path.join(__dirname, '../uploads/profiles');
 var storageAvatar = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, 'uploads/profiles')
+        cb(null, uploadDir)
     },
     filename: function (req, file, cb) {
         cb(null, Date.now() + '-' + file.originalname)
