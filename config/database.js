@@ -1,4 +1,4 @@
-//const mongoose = require('mongoose');
+const mongoose = require('mongoose');
 //mongoose.connect('mongodb+srv://malgamei2024:<YIJckpQBVjdpLicP>@nashr.j42io.mongodb.net/<nashr>?retryWrites=true&w=majority&appName=Nashr').then((con) => {
     //console.log('successfully');
 //}).catch((err) => {
