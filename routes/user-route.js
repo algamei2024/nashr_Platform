@@ -62,7 +62,7 @@ router.get('/avatar', isAuthenticated, (req, res) => {
 const uploadDir = path.join(__dirname, '../uploads/profiles');
 var storageAvatar = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, uploadDir)
+        cb(null, 'uploads/profiles')
     },
     filename: function (req, file, cb) {
         cb(null, Date.now() + '-' + file.originalname)
