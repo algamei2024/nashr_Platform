@@ -24,7 +24,7 @@ isAuthenticated = (req, res, next) => {
 const uploadDir = path.join(__dirname, '../uploads/posts/');
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, uploadDir)
+        cb(null, 'uploads/posts/')
     },
     filename: function (req, file, cb) {
         cb(null, Date.now() + '-' + file.originalname)
