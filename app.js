@@ -8,7 +8,8 @@ const Post = require('./models/Post');
 const User = require('./models/User');
 const passportSetup = require('./config/passport-setup');
 const multer = require('multer');
-const upload = multer({ dest: '/uploads' });
+const uploadDir = path.join(__dirname, 'uploads');
+const upload = multer({ dest: uploadDir});
 app.set('view engine', 'ejs');
 //======
 app.use(express.json());
